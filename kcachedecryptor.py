@@ -8,13 +8,17 @@ from subprocess import call
 class kcachedecryptor:
 	def __init__(self, device, deviceid):
 		device = kernelkey.GetKernelKey(device, deviceid)
-		bashexec = "./kc --in kernelcache.release.k93 --iv {} --key {}".format(device['iv'], device['key'])
-		is32bit = (platform.architecture()[0] == '32bit')
-		system32 = os.path.join(os.environ['SystemRoot'], 'SysNative' if is32bit else 'System32')
-		bash = os.path.join(system32, 'bash.exe')
-		call(bash + " -c '" + bashexec + "'")
-		call(bash + " -c '" + "mv kcache/kernelcache.bin ./" + "'")
-		call(bash + " -c '" + "rm -r kcache" + "'")
+		platform1 = platform.platform()
+		if platform1 == "linux" or platform1 == "linux2" or platform1 == "darwin":
+			call("./kc --in kernelcache.release.k93 --iv {} --key {}".format(device['iv'], device['key']))
+		else:
+			bashexec = "./kc --in kernelcache.release.k93 --iv {} --key {}".format(device['iv'], device['key'])
+			is32bit = (platform.architecture()[0] == '32bit')
+			system32 = os.path.join(os.environ['SystemRoot'], 'SysNative' if is32bit else 'System32')
+			bash = os.path.join(system32, 'bash.exe')
+			call(bash + " -c '" + bashexec + "'")
+			call(bash + " -c '" + "mv kcache/kernelcache.bin ./" + "'")
+			call(bash + " -c '" + "rm -r kcache" + "'")
 		
 def decrypt(device, deviceid):
 	k = kcachedecryptor(device, deviceid)
