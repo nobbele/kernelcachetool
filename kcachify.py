@@ -1,7 +1,7 @@
 from subprocess import call
 import offsetgen
 import kcachedecryptor as kcachedec
-import kcachedownloader as kcachedown
+import downloader as kcachedown
 import offsetgrabber as grab
 import sys
 import os
