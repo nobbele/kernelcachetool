@@ -10,14 +10,15 @@ import platform
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		if sys.argv[1] == "kernelgen":
+			file = "kernelcache.release." + input("kernelcache ending? (n93, k93, etc)\n")
 			device = sys.argv[2]
 			build = sys.argv[3]
-			kcachedown.download(device, build)
-			kcachedec.decrypt(device, build)
+			kcachedown.download(device, build, file)
+			kcachedec.decrypt(device, build, file)
 			platform1 = platform.platform()
 			if platform1 == "linux" or platform1 == "linux2" or platform1 == "darwin":
 				print("Copy this line to paste into untether.json")
-				call("strings kernelcache.bin | grep 'Darwin Kernel >> Darwin.txt'")
+				call("strings kernelcache.bin | grep 'Darwin Kernel'")
 			else:
 				is32bit = (platform.architecture()[0] == '32bit')
 				system32 = os.path.join(os.environ['SystemRoot'], 'SysNative' if is32bit else 'System32')
